@@ -116,8 +116,9 @@
             gap: 3rem;
             justify-content: center;
             align-items: center;
-            flex-wrap: wrap;
             margin-top: 3rem;
+            position: relative;
+            height: 100px;
         }
 
         .btn {
@@ -131,6 +132,7 @@
             letter-spacing: 0.05em;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
             font-weight: 600;
+            position: relative;
         }
 
         .btn-yes {
@@ -158,8 +160,11 @@
         .btn-no {
             background: linear-gradient(135deg, #e0e0e8 0%, #c8c8d8 100%);
             color: #4a4a5a;
-            position: absolute;
-            transition: all 0.2s ease;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .btn-no:hover {
+            transform: scale(1.05);
         }
 
         /* Reveal page */
@@ -332,12 +337,218 @@
                 height: 250px;
             }
         }
+
+        /* Door opening animation */
+        .door-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            pointer-events: none;
+            display: none;
+        }
+
+        .door-overlay.active {
+            display: block;
+            pointer-events: all;
+        }
+
+        .door-left, .door-right {
+            position: absolute;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(to bottom, 
+                #8B4513 0%, 
+                #654321 20%, 
+                #8B4513 40%, 
+                #654321 60%, 
+                #8B4513 80%, 
+                #654321 100%);
+            box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.5);
+        }
+
+        .door-left {
+            left: 0;
+            transform-origin: left center;
+            border-right: 4px solid #D4AF37;
+        }
+
+        .door-right {
+            right: 0;
+            transform-origin: right center;
+            border-left: 4px solid #D4AF37;
+        }
+
+        .door-left::before, .door-right::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 80px;
+            height: 150px;
+            background: linear-gradient(135deg, #D4AF37 0%, #FFD700 50%, #D4AF37 100%);
+            border-radius: 10px;
+            transform: translateY(-50%);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .door-left::before {
+            right: 40px;
+        }
+
+        .door-right::before {
+            left: 40px;
+        }
+
+        .door-left::after, .door-right::after {
+            content: '';
+            position: absolute;
+            top: 20%;
+            bottom: 20%;
+            width: 70%;
+            left: 15%;
+            border: 3px solid #D4AF37;
+            border-radius: 5px;
+            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .door-overlay.opening .door-left {
+            animation: openLeft 2s ease-in-out forwards;
+        }
+
+        .door-overlay.opening .door-right {
+            animation: openRight 2s ease-in-out forwards;
+        }
+
+        @keyframes openLeft {
+            0% {
+                transform: perspective(1200px) rotateY(0deg);
+            }
+            100% {
+                transform: perspective(1200px) rotateY(-120deg);
+            }
+        }
+
+        @keyframes openRight {
+            0% {
+                transform: perspective(1200px) rotateY(0deg);
+            }
+            100% {
+                transform: perspective(1200px) rotateY(120deg);
+            }
+        }
+
+        .door-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, 
+                transparent 0%, 
+                rgba(248, 205, 218, 0.5) 30%,
+                rgba(248, 205, 218, 0.8) 50%,
+                rgba(248, 205, 218, 0.5) 70%,
+                transparent 100%);
+            opacity: 0;
+        }
+
+        .door-overlay.opening .door-glow {
+            animation: glowAppear 2s ease-in-out forwards;
+        }
+
+        @keyframes glowAppear {
+            0% {
+                opacity: 0;
+                width: 2px;
+            }
+            50% {
+                opacity: 1;
+                width: 200px;
+            }
+            100% {
+                opacity: 0;
+                width: 400px;
+            }
+        }
+
+        /* Magical cursor */
+        body.magical-cursor {
+            cursor: none;
+        }
+
+        .custom-cursor {
+            position: fixed;
+            width: 30px;
+            height: 30px;
+            pointer-events: none;
+            z-index: 9999;
+            display: none;
+        }
+
+        body.magical-cursor .custom-cursor {
+            display: block;
+        }
+
+        .cursor-star {
+            position: absolute;
+            color: #f8cdda;
+            font-size: 24px;
+            animation: rotateStar 2s linear infinite;
+            filter: drop-shadow(0 0 5px rgba(248, 205, 218, 0.8));
+        }
+
+        @keyframes rotateStar {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .cursor-trail {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: radial-gradient(circle, rgba(248, 205, 218, 0.8) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            animation: fadeTrail 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeTrail {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+        }
     </style>
 </head>
 <body>
     <!-- Decorative elements -->
     <div class="tutu-decoration tutu-left"></div>
     <div class="tutu-decoration tutu-right"></div>
+
+    <!-- Door opening animation -->
+    <div class="door-overlay" id="doorOverlay">
+        <div class="door-left"></div>
+        <div class="door-right"></div>
+        <div class="door-glow"></div>
+    </div>
+
+    <!-- Custom cursor -->
+    <div class="custom-cursor" id="customCursor">
+        <div class="cursor-star">✨</div>
+    </div>
 
     <div class="container">
         <!-- Question Page -->
@@ -373,8 +584,8 @@
                 
                 <div class="video-container">
                     <iframe 
-                        src="https://www.youtube.com/embed/Zxrv-UwoCaM" 
-                        title="Giselle - Bande-annonce" 
+                        src="https://www.youtube-nocookie.com/embed/Zxrv-UwoCaM" 
+                        title="Giselle" 
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                         allowfullscreen>
                     </iframe>
@@ -410,31 +621,141 @@
         const btnNo = document.getElementById('btnNo');
         const questionPage = document.getElementById('questionPage');
         const revealPage = document.getElementById('revealPage');
+        const doorOverlay = document.getElementById('doorOverlay');
 
-        // "Yes" button - reveal the surprise
+        // "Yes" button - door opening animation then reveal
         btnYes.addEventListener('click', () => {
+            // 1. On rend l'overlay visible (les portes apparaissent fermées)
+            doorOverlay.classList.add('active');
+            
+            // 2. On change le contenu derrière les portes IMMÉDIATEMENT
+            // Comme les portes masquent l'écran, la transition est invisible
             questionPage.style.display = 'none';
             revealPage.classList.add('active');
+
+            // 3. On déclenche l'ouverture des portes avec un tout petit délai
+            // (50ms suffisent pour que le navigateur comprenne que les portes étaient fermées avant de s'ouvrir)
+            setTimeout(() => {
+                doorOverlay.classList.add('opening');
+            }, 50);
+            
+            // 4. Une fois l'animation finie (2s), on nettoie
+            setTimeout(() => {
+                // On retire l'overlay pour permettre d'interagir avec la page (cliquer sur la vidéo, etc.)
+                doorOverlay.classList.remove('active');
+                doorOverlay.classList.remove('opening');
+                
+                // Active le curseur magique
+                document.body.classList.add('magical-cursor');
+            }, 2500); // 2000ms d'animation + 500ms de marge de sécurité
         });
 
-        // "No" button - runs away from cursor
-        let noButtonPosition = { x: 0, y: 0 };
-        
-        function moveNoButton() {
-            const container = document.querySelector('.container');
-            const containerRect = container.getBoundingClientRect();
+        // Magical cursor
+        const customCursor = document.getElementById('customCursor');
+        let cursorX = 0;
+        let cursorY = 0;
+        let trails = [];
+
+        document.addEventListener('mousemove', (e) => {
+            cursorX = e.clientX;
+            cursorY = e.clientY;
+            
+            // Update custom cursor position
+            customCursor.style.left = (cursorX - 15) + 'px';
+            customCursor.style.top = (cursorY - 15) + 'px';
+            
+            // Create trail effect (only when magical cursor is active)
+            if (document.body.classList.contains('magical-cursor')) {
+                createTrail(cursorX, cursorY);
+            }
+        });
+
+        function createTrail(x, y) {
+            // Limit trail creation rate
+            if (Math.random() > 0.3) return;
+            
+            const trail = document.createElement('div');
+            trail.className = 'cursor-trail';
+            trail.style.left = x + 'px';
+            trail.style.top = y + 'px';
+            document.body.appendChild(trail);
+            
+            // Remove trail after animation
+            setTimeout(() => {
+                trail.remove();
+            }, 800);
+        }
+
+        // "No" button - runs away from cursor but stays side by side initially
+        let isNoButtonMoving = false;
+        let lastMoveTime = 0;
+        const minMoveInterval = 200; // Minimum time between moves in ms
+
+        function moveNoButton(mouseX, mouseY) {
+            const now = Date.now();
+            
+            // Throttle movements but make them smoother
+            if (now - lastMoveTime < minMoveInterval) return;
+            lastMoveTime = now;
+
             const btnRect = btnNo.getBoundingClientRect();
             
-            // Calculate available space
-            const maxX = containerRect.width - btnRect.width - 100;
-            const maxY = containerRect.height - btnRect.height - 100;
+            // Calculate safe boundaries with margin
+            const margin = 80;
+            const maxX = window.innerWidth - btnRect.width - margin;
+            const maxY = window.innerHeight - btnRect.height - margin;
             
-            // Generate new random position
-            noButtonPosition.x = Math.random() * maxX;
-            noButtonPosition.y = Math.random() * maxY;
+            // Calculate current button center
+            const btnCenterX = btnRect.left + btnRect.width / 2;
+            const btnCenterY = btnRect.top + btnRect.height / 2;
             
-            btnNo.style.left = noButtonPosition.x + 'px';
-            btnNo.style.top = noButtonPosition.y + 'px';
+            // Calculate distance and direction from mouse
+            const deltaX = btnCenterX - mouseX;
+            const deltaY = btnCenterY - mouseY;
+            const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+            
+            // More aggressive movement when closer
+            const intensity = Math.max(150, 300 - distance);
+            
+            // Add more randomness for unpredictable movement
+            const randomAngle = (Math.random() - 0.5) * Math.PI; // Random angle
+            const randomDistance = Math.random() * 100 + intensity;
+            
+            // Calculate direction with randomness
+            const angle = Math.atan2(deltaY, deltaX) + randomAngle;
+            const dirX = Math.cos(angle) * randomDistance;
+            const dirY = Math.sin(angle) * randomDistance;
+            
+            // Calculate new position
+            let newX = btnRect.left + dirX;
+            let newY = btnRect.top + dirY;
+            
+            // Keep within bounds with bounce effect
+            if (newX < margin) {
+                newX = margin + Math.random() * 100;
+            } else if (newX > maxX) {
+                newX = maxX - Math.random() * 100;
+            }
+            
+            if (newY < margin) {
+                newY = margin + Math.random() * 100;
+            } else if (newY > maxY) {
+                newY = maxY - Math.random() * 100;
+            }
+            
+            // Apply smooth position change
+            btnNo.style.position = 'fixed';
+            btnNo.style.left = newX + 'px';
+            btnNo.style.top = newY + 'px';
+            
+            // Add slight rotation for playful effect
+            const rotation = (Math.random() - 0.5) * 10;
+            btnNo.style.transform = `rotate(${rotation}deg)`;
+            
+            // Reset rotation after animation
+            setTimeout(() => {
+                btnNo.style.transform = 'rotate(0deg)';
+            }, 500);
         }
 
         // Move the No button when mouse gets close
@@ -450,17 +771,49 @@
                 Math.pow(e.clientY - btnCenterY, 2)
             );
             
-            // If cursor is within 150px, move the button
+            // Larger detection radius for earlier reaction
             if (distance < 150) {
-                moveNoButton();
+                moveNoButton(e.clientX, e.clientY);
             }
         });
 
         // Also move on touch for mobile
         btnNo.addEventListener('touchstart', (e) => {
             e.preventDefault();
-            moveNoButton();
+            const touch = e.touches[0];
+            moveNoButton(touch.clientX, touch.clientY);
         });
+
+        // Random spontaneous movements to make it even more playful
+        let spontaneousInterval;
+        
+        function startSpontaneousMovements() {
+            spontaneousInterval = setInterval(() => {
+                if (questionPage.style.display === 'none') {
+                    clearInterval(spontaneousInterval);
+                    return;
+                }
+                
+                // 20% chance of spontaneous movement
+                if (Math.random() < 0.2) {
+                    const btnRect = btnNo.getBoundingClientRect();
+                    const margin = 80;
+                    const maxX = window.innerWidth - btnRect.width - margin;
+                    const maxY = window.innerHeight - btnRect.height - margin;
+                    
+                    // Random position
+                    const newX = margin + Math.random() * (maxX - margin);
+                    const newY = margin + Math.random() * (maxY - margin);
+                    
+                    btnNo.style.position = 'fixed';
+                    btnNo.style.left = newX + 'px';
+                    btnNo.style.top = newY + 'px';
+                }
+            }, 3000); // Check every 3 seconds
+        }
+        
+        // Start spontaneous movements after a delay
+        setTimeout(startSpontaneousMovements, 2000);
     </script>
 </body>
 </html>
