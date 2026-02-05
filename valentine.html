@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veux-tu être ma Valentine ? 💕</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #f0f0f0;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Floating particles effect */
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: float 8s infinite ease-in-out;
+            opacity: 0;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(50px);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        /* Question page */
+        .question-page {
+            text-align: center;
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-family: 'Crimson Text', serif;
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #ffffff 0%, #e8e8f0 50%, #d4d4e8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 3s infinite;
+            font-style: italic;
+        }
+
+        @keyframes shimmer {
+            0%, 100% {
+                filter: brightness(1);
+            }
+            50% {
+                filter: brightness(1.2);
+            }
+        }
+
+        .subtitle {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-weight: 300;
+            color: #d4d4e8;
+            margin-bottom: 4rem;
+            letter-spacing: 0.1em;
+            animation: fadeIn 1.5s ease-in;
+        }
+
+        .buttons-container {
+            display: flex;
+            gap: 3rem;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 3rem;
+        }
+
+        .btn {
+            font-family: 'Crimson Text', serif;
+            font-size: 2rem;
+            padding: 1.5rem 4rem;
+            border: none;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 0.05em;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            font-weight: 600;
+        }
+
+        .btn-yes {
+            background: linear-gradient(135deg, #f8cdda 0%, #f5a3bf 100%);
+            color: #5a2a4a;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 10px 40px rgba(248, 205, 218, 0.4);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 15px 60px rgba(248, 205, 218, 0.6);
+            }
+        }
+
+        .btn-yes:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 60px rgba(248, 205, 218, 0.8);
+        }
+
+        .btn-no {
+            background: linear-gradient(135deg, #e0e0e8 0%, #c8c8d8 100%);
+            color: #4a4a5a;
+            position: absolute;
+            transition: all 0.2s ease;
+        }
+
+        /* Reveal page */
+        .reveal-page {
+            display: none;
+            text-align: center;
+            animation: revealAnimation 1.5s ease-in;
+            max-width: 900px;
+        }
+
+        @keyframes revealAnimation {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            60% {
+                transform: scale(1.05);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .reveal-page.active {
+            display: block;
+        }
+
+        .heart-container {
+            font-size: 6rem;
+            margin-bottom: 2rem;
+            animation: heartbeat 1.5s infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% {
+                transform: scale(1);
+            }
+            10%, 30% {
+                transform: scale(1.1);
+            }
+            20%, 40% {
+                transform: scale(1.05);
+            }
+        }
+
+        .reveal-title {
+            font-family: 'Crimson Text', serif;
+            font-size: clamp(2rem, 6vw, 4rem);
+            font-weight: 400;
+            margin-bottom: 2rem;
+            color: #f8cdda;
+            font-style: italic;
+        }
+
+        .ballet-info {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(248, 205, 218, 0.3);
+            border-radius: 20px;
+            padding: 3rem;
+            margin: 2rem 0;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .ballet-title {
+            font-family: 'Crimson Text', serif;
+            font-size: 2.5rem;
+            font-style: italic;
+            color: #ffffff;
+            margin-bottom: 1rem;
+        }
+
+        .ballet-details {
+            font-size: 1.4rem;
+            line-height: 2;
+            color: #e8e8f0;
+            margin: 1.5rem 0;
+        }
+
+        .ballet-details strong {
+            color: #f8cdda;
+            font-weight: 600;
+        }
+
+        .description {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #d4d4e8;
+            font-style: italic;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            border-top: 1px solid rgba(248, 205, 218, 0.2);
+        }
+
+        .video-container {
+            margin: 3rem 0;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .video-container iframe {
+            width: 100%;
+            height: 400px;
+            border: none;
+        }
+
+        .love-message {
+            font-size: 1.5rem;
+            color: #f8cdda;
+            margin-top: 3rem;
+            font-style: italic;
+            line-height: 1.8;
+        }
+
+        /* Decorative elements */
+        .tutu-decoration {
+            position: fixed;
+            opacity: 0.05;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .tutu-left {
+            top: 10%;
+            left: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: rotate 30s linear infinite;
+        }
+
+        .tutu-right {
+            bottom: 10%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(248, 205, 218, 0.3) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: rotate 40s linear infinite reverse;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .buttons-container {
+                gap: 2rem;
+            }
+            
+            .btn {
+                font-size: 1.5rem;
+                padding: 1rem 3rem;
+            }
+            
+            .ballet-info {
+                padding: 2rem 1.5rem;
+            }
+            
+            .video-container iframe {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Decorative elements -->
+    <div class="tutu-decoration tutu-left"></div>
+    <div class="tutu-decoration tutu-right"></div>
+
+    <div class="container">
+        <!-- Question Page -->
+        <div class="question-page" id="questionPage">
+            <h1>Ma Valentine</h1>
+            <p class="subtitle">Veux-tu être ma Valentine ?</p>
+            
+            <div class="buttons-container">
+                <button class="btn btn-yes" id="btnYes">Oui ✨</button>
+                <button class="btn btn-no" id="btnNo">Non</button>
+            </div>
+        </div>
+
+        <!-- Reveal Page -->
+        <div class="reveal-page" id="revealPage">
+            <div class="heart-container">💕</div>
+            <h2 class="reveal-title">Je savais que tu dirais oui !</h2>
+            
+            <div class="ballet-info">
+                <h3 class="ballet-title">Giselle</h3>
+                <div class="ballet-details">
+                    📍 <strong>Palais Garnier, Opéra de Paris</strong><br>
+                    📅 <strong>27 juin 2026</strong><br>
+                    🎭 <strong>2 places réservées</strong>
+                </div>
+                
+                <p class="description">
+                    "Giselle marque l'apogée de la nouvelle esthétique romantique. 
+                    L'histoire de cette jeune paysanne qui tombe amoureuse d'un duc et 
+                    devient l'une des Wilis, ces esprits de jeunes filles mortes avant leurs noces. 
+                    Un ballet féerique avec ses tutus blancs et son atmosphère onirique..."
+                </p>
+                
+                <div class="video-container">
+                    <iframe 
+                        src="https://www.youtube.com/embed/Zxrv-UwoCaM" 
+                        title="Giselle - Bande-annonce" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                
+                <p class="love-message">
+                    Une soirée magique nous attend, où danse et romance se mêlent 
+                    sous les lumières du Palais Garnier. Comme Giselle et Albrecht, 
+                    mais avec une fin plus heureuse... 💫
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create floating particles
+        function createParticles() {
+            const container = document.body;
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 8 + 's';
+                particle.style.animationDuration = (Math.random() * 5 + 5) + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        createParticles();
+
+        // Button interactions
+        const btnYes = document.getElementById('btnYes');
+        const btnNo = document.getElementById('btnNo');
+        const questionPage = document.getElementById('questionPage');
+        const revealPage = document.getElementById('revealPage');
+
+        // "Yes" button - reveal the surprise
+        btnYes.addEventListener('click', () => {
+            questionPage.style.display = 'none';
+            revealPage.classList.add('active');
+        });
+
+        // "No" button - runs away from cursor
+        let noButtonPosition = { x: 0, y: 0 };
+        
+        function moveNoButton() {
+            const container = document.querySelector('.container');
+            const containerRect = container.getBoundingClientRect();
+            const btnRect = btnNo.getBoundingClientRect();
+            
+            // Calculate available space
+            const maxX = containerRect.width - btnRect.width - 100;
+            const maxY = containerRect.height - btnRect.height - 100;
+            
+            // Generate new random position
+            noButtonPosition.x = Math.random() * maxX;
+            noButtonPosition.y = Math.random() * maxY;
+            
+            btnNo.style.left = noButtonPosition.x + 'px';
+            btnNo.style.top = noButtonPosition.y + 'px';
+        }
+
+        // Move the No button when mouse gets close
+        document.addEventListener('mousemove', (e) => {
+            if (questionPage.style.display === 'none') return;
+            
+            const btnRect = btnNo.getBoundingClientRect();
+            const btnCenterX = btnRect.left + btnRect.width / 2;
+            const btnCenterY = btnRect.top + btnRect.height / 2;
+            
+            const distance = Math.sqrt(
+                Math.pow(e.clientX - btnCenterX, 2) + 
+                Math.pow(e.clientY - btnCenterY, 2)
+            );
+            
+            // If cursor is within 150px, move the button
+            if (distance < 150) {
+                moveNoButton();
+            }
+        });
+
+        // Also move on touch for mobile
+        btnNo.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            moveNoButton();
+        });
+    </script>
+</body>
+</html>
