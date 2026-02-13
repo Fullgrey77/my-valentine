@@ -2,7 +2,10 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#1a1a2e">
     <title>Veux-tu être ma Valentine ? 💕</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,6 +15,10 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
         }
 
         body {
@@ -19,11 +26,19 @@
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
             color: #f0f0f0;
             min-height: 100vh;
+            min-height: -webkit-fill-available;
             overflow-x: hidden;
             position: relative;
+            overscroll-behavior: none;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
-        /* Floating particles effect */
+        html {
+            height: -webkit-fill-available;
+        }
+
+        /* Floating particles effect - optimized for mobile */
         .particle {
             position: absolute;
             width: 3px;
@@ -32,6 +47,13 @@
             border-radius: 50%;
             animation: float 8s infinite ease-in-out;
             opacity: 0;
+            will-change: transform, opacity;
+        }
+
+        @media (max-width: 768px) {
+            .particle:nth-child(n+26) {
+                display: none; /* Reduce particles on mobile for performance */
+            }
         }
 
         @keyframes float {
@@ -55,11 +77,12 @@
             position: relative;
             z-index: 10;
             min-height: 100vh;
+            min-height: -webkit-fill-available;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 2rem;
+            padding: max(2rem, env(safe-area-inset-top)) max(2rem, env(safe-area-inset-right)) max(2rem, env(safe-area-inset-bottom)) max(2rem, env(safe-area-inset-left));
         }
 
         /* Question page */
@@ -91,6 +114,7 @@
             background-clip: text;
             animation: shimmer 3s infinite;
             font-style: italic;
+            will-change: filter;
         }
 
         @keyframes shimmer {
@@ -119,6 +143,8 @@
             margin-top: 3rem;
             position: relative;
             height: 100px;
+            width: 100%;
+            flex-wrap: wrap;
         }
 
         .btn {
@@ -133,6 +159,10 @@
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
             font-weight: 600;
             position: relative;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            will-change: transform;
+            min-width: 160px;
         }
 
         .btn-yes {
@@ -152,6 +182,10 @@
             }
         }
 
+        .btn-yes:active {
+            transform: scale(0.95);
+        }
+
         .btn-yes:hover {
             transform: scale(1.1);
             box-shadow: 0 15px 60px rgba(248, 205, 218, 0.8);
@@ -165,6 +199,10 @@
 
         .btn-no:hover {
             transform: scale(1.05);
+        }
+
+        .btn-no:active {
+            transform: scale(0.95);
         }
 
         /* Reveal page */
@@ -321,12 +359,16 @@
         /* Responsive */
         @media (max-width: 768px) {
             .buttons-container {
-                gap: 2rem;
+                gap: 1.5rem;
+                flex-direction: column;
+                height: auto;
             }
             
             .btn {
                 font-size: 1.5rem;
-                padding: 1rem 3rem;
+                padding: 1.2rem 3rem;
+                width: 100%;
+                max-width: 280px;
             }
             
             .ballet-info {
@@ -335,6 +377,103 @@
             
             .video-container iframe {
                 height: 250px;
+            }
+
+            h1 {
+                font-size: clamp(2rem, 10vw, 3.5rem);
+            }
+
+            .subtitle {
+                font-size: clamp(1rem, 4vw, 1.5rem);
+            }
+
+            .reveal-title {
+                font-size: clamp(1.8rem, 8vw, 3rem);
+            }
+
+            .ballet-title {
+                font-size: 2rem;
+            }
+
+            .ballet-details {
+                font-size: 1.2rem;
+            }
+
+            .description {
+                font-size: 1.1rem;
+            }
+
+            .love-message {
+                font-size: 1.3rem;
+            }
+        }
+
+        /* iPhone 12, 13, 14, 15 specific optimizations */
+        @media only screen 
+            and (device-width: 390px) 
+            and (device-height: 844px) 
+            and (-webkit-device-pixel-ratio: 3) {
+            
+            .container {
+                padding: max(1.5rem, env(safe-area-inset-top)) max(1.5rem, env(safe-area-inset-right)) max(1.5rem, env(safe-area-inset-bottom)) max(1.5rem, env(safe-area-inset-left));
+            }
+        }
+
+        /* iPhone 12 Pro Max, 13 Pro Max, 14 Plus, 15 Plus specific */
+        @media only screen 
+            and (device-width: 428px) 
+            and (device-height: 926px) 
+            and (-webkit-device-pixel-ratio: 3) {
+            
+            .container {
+                padding: max(1.5rem, env(safe-area-inset-top)) max(1.5rem, env(safe-area-inset-right)) max(1.5rem, env(safe-area-inset-bottom)) max(1.5rem, env(safe-area-inset-left));
+            }
+        }
+
+        /* Small screens optimization */
+        @media (max-width: 390px) {
+            .btn {
+                font-size: 1.3rem;
+                padding: 1rem 2.5rem;
+            }
+
+            .buttons-container {
+                gap: 1rem;
+            }
+        }
+
+        /* Landscape mode on mobile */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .container {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .buttons-container {
+                margin-top: 1rem;
+                flex-direction: row;
+            }
+
+            .btn {
+                padding: 0.8rem 2rem;
+                font-size: 1.2rem;
+            }
+
+            .ballet-info {
+                padding: 1.5rem 1rem;
+            }
+
+            .video-container {
+                margin: 1.5rem 0;
             }
         }
 
@@ -348,6 +487,9 @@
             z-index: 1000;
             pointer-events: none;
             display: none;
+            background: #000;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
         }
 
         .door-overlay.active {
@@ -360,83 +502,76 @@
             top: 0;
             width: 50%;
             height: 100%;
-            background: linear-gradient(to bottom, 
-                #8B4513 0%, 
-                #654321 20%, 
-                #8B4513 40%, 
-                #654321 60%, 
-                #8B4513 80%, 
-                #654321 100%);
+            background-image: url('Visites_insolites_Opera_Garnier.jpg');
+            background-size: 200% 100%;
+            background-position: left center;
             box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            will-change: transform;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            transform: translateZ(0);
         }
 
         .door-left {
             left: 0;
             transform-origin: left center;
+            background-position: left center;
             border-right: 4px solid #D4AF37;
         }
 
         .door-right {
             right: 0;
             transform-origin: right center;
+            background-position: right center;
             border-left: 4px solid #D4AF37;
         }
 
+        /* Add door handles */
         .door-left::before, .door-right::before {
             content: '';
             position: absolute;
             top: 50%;
-            width: 80px;
-            height: 150px;
+            width: 60px;
+            height: 120px;
             background: linear-gradient(135deg, #D4AF37 0%, #FFD700 50%, #D4AF37 100%);
-            border-radius: 10px;
+            border-radius: 8px;
             transform: translateY(-50%);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+            z-index: 10;
         }
 
         .door-left::before {
-            right: 40px;
+            right: 30px;
         }
 
         .door-right::before {
-            left: 40px;
-        }
-
-        .door-left::after, .door-right::after {
-            content: '';
-            position: absolute;
-            top: 20%;
-            bottom: 20%;
-            width: 70%;
-            left: 15%;
-            border: 3px solid #D4AF37;
-            border-radius: 5px;
-            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.3);
+            left: 30px;
         }
 
         .door-overlay.opening .door-left {
-            animation: openLeft 2s ease-in-out forwards;
+            animation: openLeft 2.5s ease-in-out forwards;
         }
 
         .door-overlay.opening .door-right {
-            animation: openRight 2s ease-in-out forwards;
+            animation: openRight 2.5s ease-in-out forwards;
         }
 
         @keyframes openLeft {
             0% {
-                transform: perspective(1200px) rotateY(0deg);
+                transform: perspective(2000px) rotateY(0deg);
             }
             100% {
-                transform: perspective(1200px) rotateY(-120deg);
+                transform: perspective(2000px) rotateY(-105deg);
             }
         }
 
         @keyframes openRight {
             0% {
-                transform: perspective(1200px) rotateY(0deg);
+                transform: perspective(2000px) rotateY(0deg);
             }
             100% {
-                transform: perspective(1200px) rotateY(120deg);
+                transform: perspective(2000px) rotateY(105deg);
             }
         }
 
@@ -449,15 +584,18 @@
             height: 100%;
             background: linear-gradient(to bottom, 
                 transparent 0%, 
-                rgba(248, 205, 218, 0.5) 30%,
+                rgba(248, 205, 218, 0.6) 20%,
+                rgba(255, 215, 0, 0.8) 40%,
                 rgba(248, 205, 218, 0.8) 50%,
-                rgba(248, 205, 218, 0.5) 70%,
+                rgba(255, 215, 0, 0.8) 60%,
+                rgba(248, 205, 218, 0.6) 80%,
                 transparent 100%);
             opacity: 0;
+            filter: blur(20px);
         }
 
         .door-overlay.opening .door-glow {
-            animation: glowAppear 2s ease-in-out forwards;
+            animation: glowAppear 2.5s ease-in-out forwards;
         }
 
         @keyframes glowAppear {
@@ -465,19 +603,67 @@
                 opacity: 0;
                 width: 2px;
             }
-            50% {
+            30% {
+                opacity: 0.8;
+                width: 100px;
+            }
+            60% {
                 opacity: 1;
-                width: 200px;
+                width: 300px;
             }
             100% {
                 opacity: 0;
-                width: 400px;
+                width: 500px;
             }
         }
 
-        /* Magical cursor */
+        /* Light rays effect */
+        .light-ray {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom,
+                transparent 0%,
+                rgba(255, 215, 0, 0.4) 50%,
+                transparent 100%);
+            transform-origin: top center;
+            opacity: 0;
+        }
+
+        .door-overlay.opening .light-ray {
+            animation: raySpread 2.5s ease-out forwards;
+        }
+
+        @keyframes raySpread {
+            0% {
+                opacity: 0;
+                transform: translateX(-50%) scaleY(0);
+            }
+            30% {
+                opacity: 0.6;
+                transform: translateX(-50%) scaleY(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateX(-50%) scaleY(1);
+            }
+        }
+
+        /* Magical cursor - disabled on touch devices for performance */
         body.magical-cursor {
             cursor: none;
+        }
+
+        @media (hover: none) and (pointer: coarse) {
+            body.magical-cursor {
+                cursor: auto;
+            }
+            
+            .custom-cursor {
+                display: none !important;
+            }
         }
 
         .custom-cursor {
@@ -487,10 +673,17 @@
             pointer-events: none;
             z-index: 9999;
             display: none;
+            will-change: transform;
         }
 
         body.magical-cursor .custom-cursor {
             display: block;
+        }
+
+        @media (hover: hover) {
+            body.magical-cursor .custom-cursor {
+                display: block;
+            }
         }
 
         .cursor-star {
@@ -499,6 +692,7 @@
             font-size: 24px;
             animation: rotateStar 2s linear infinite;
             filter: drop-shadow(0 0 5px rgba(248, 205, 218, 0.8));
+            will-change: transform;
         }
 
         @keyframes rotateStar {
@@ -519,6 +713,13 @@
             pointer-events: none;
             z-index: 9998;
             animation: fadeTrail 0.8s ease-out forwards;
+            will-change: opacity, transform;
+        }
+
+        @media (hover: none) and (pointer: coarse) {
+            .cursor-trail {
+                display: none;
+            }
         }
 
         @keyframes fadeTrail {
@@ -543,6 +744,11 @@
         <div class="door-left"></div>
         <div class="door-right"></div>
         <div class="door-glow"></div>
+        <div class="light-ray" style="transform: translateX(-50%) rotate(-15deg);"></div>
+        <div class="light-ray" style="transform: translateX(-50%) rotate(-7deg); animation-delay: 0.1s;"></div>
+        <div class="light-ray" style="transform: translateX(-50%) rotate(0deg); animation-delay: 0.2s;"></div>
+        <div class="light-ray" style="transform: translateX(-50%) rotate(7deg); animation-delay: 0.1s;"></div>
+        <div class="light-ray" style="transform: translateX(-50%) rotate(15deg); animation-delay: 0.15s;"></div>
     </div>
 
     <!-- Custom cursor -->
@@ -584,8 +790,8 @@
                 
                 <div class="video-container">
                     <iframe 
-                        src="https://www.youtube-nocookie.com/embed/Zxrv-UwoCaM" 
-                        title="Giselle" 
+                        src="https://www.youtube.com/embed/Zxrv-UwoCaM" 
+                        title="Giselle - Bande-annonce" 
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                         allowfullscreen>
                     </iframe>
@@ -601,10 +807,14 @@
     </div>
 
     <script>
-        // Create floating particles
+        // Detect if device is mobile/touch
+        const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+        
+        // Create floating particles (reduce on mobile)
         function createParticles() {
             const container = document.body;
-            for (let i = 0; i < 50; i++) {
+            const particleCount = isTouchDevice ? 25 : 50;
+            for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
                 particle.style.left = Math.random() * 100 + '%';
@@ -625,50 +835,51 @@
 
         // "Yes" button - door opening animation then reveal
         btnYes.addEventListener('click', () => {
-            // 1. On rend l'overlay visible (les portes apparaissent fermées)
+            // Prevent double clicks
+            btnYes.disabled = true;
+            
+            // Show and animate door
             doorOverlay.classList.add('active');
+            doorOverlay.classList.add('opening');
             
-            // 2. On change le contenu derrière les portes IMMÉDIATEMENT
-            // Comme les portes masquent l'écran, la transition est invisible
-            questionPage.style.display = 'none';
-            revealPage.classList.add('active');
-
-            // 3. On déclenche l'ouverture des portes avec un tout petit délai
-            // (50ms suffisent pour que le navigateur comprenne que les portes étaient fermées avant de s'ouvrir)
+            // After 2.5 seconds (door animation), show reveal page
             setTimeout(() => {
-                doorOverlay.classList.add('opening');
-            }, 50);
-            
-            // 4. Une fois l'animation finie (2s), on nettoie
-            setTimeout(() => {
-                // On retire l'overlay pour permettre d'interagir avec la page (cliquer sur la vidéo, etc.)
-                doorOverlay.classList.remove('active');
-                doorOverlay.classList.remove('opening');
+                questionPage.style.display = 'none';
+                revealPage.classList.add('active');
                 
-                // Active le curseur magique
-                document.body.classList.add('magical-cursor');
-            }, 2500); // 2000ms d'animation + 500ms de marge de sécurité
+                // After another 0.5s, remove door overlay
+                setTimeout(() => {
+                    doorOverlay.classList.remove('active');
+                    doorOverlay.classList.remove('opening');
+                    
+                    // Activate magical cursor only on desktop
+                    if (!isTouchDevice) {
+                        document.body.classList.add('magical-cursor');
+                    }
+                }, 500);
+            }, 2500);
         });
 
-        // Magical cursor
+        // Magical cursor (only for desktop)
         const customCursor = document.getElementById('customCursor');
         let cursorX = 0;
         let cursorY = 0;
-        let trails = [];
 
-        document.addEventListener('mousemove', (e) => {
-            cursorX = e.clientX;
-            cursorY = e.clientY;
-            
-            // Update custom cursor position
-            customCursor.style.left = (cursorX - 15) + 'px';
-            customCursor.style.top = (cursorY - 15) + 'px';
-            
-            // Create trail effect (only when magical cursor is active)
-            if (document.body.classList.contains('magical-cursor')) {
-                createTrail(cursorX, cursorY);
-            }
-        });
+        if (!isTouchDevice) {
+            document.addEventListener('mousemove', (e) => {
+                cursorX = e.clientX;
+                cursorY = e.clientY;
+                
+                // Update custom cursor position
+                customCursor.style.left = (cursorX - 15) + 'px';
+                customCursor.style.top = (cursorY - 15) + 'px';
+                
+                // Create trail effect (only when magical cursor is active)
+                if (document.body.classList.contains('magical-cursor')) {
+                    createTrail(cursorX, cursorY);
+                }
+            });
+        }
 
         function createTrail(x, y) {
             // Limit trail creation rate
@@ -686,22 +897,20 @@
             }, 800);
         }
 
-        // "No" button - runs away from cursor but stays side by side initially
-        let isNoButtonMoving = false;
+        // "No" button - runs away from cursor/touch
         let lastMoveTime = 0;
-        const minMoveInterval = 200; // Minimum time between moves in ms
+        const minMoveInterval = 200;
 
         function moveNoButton(mouseX, mouseY) {
             const now = Date.now();
             
-            // Throttle movements but make them smoother
             if (now - lastMoveTime < minMoveInterval) return;
             lastMoveTime = now;
 
             const btnRect = btnNo.getBoundingClientRect();
             
             // Calculate safe boundaries with margin
-            const margin = 80;
+            const margin = isTouchDevice ? 60 : 80;
             const maxX = window.innerWidth - btnRect.width - margin;
             const maxY = window.innerHeight - btnRect.height - margin;
             
@@ -709,7 +918,7 @@
             const btnCenterX = btnRect.left + btnRect.width / 2;
             const btnCenterY = btnRect.top + btnRect.height / 2;
             
-            // Calculate distance and direction from mouse
+            // Calculate distance and direction from mouse/touch
             const deltaX = btnCenterX - mouseX;
             const deltaY = btnCenterY - mouseY;
             const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
@@ -717,8 +926,8 @@
             // More aggressive movement when closer
             const intensity = Math.max(150, 300 - distance);
             
-            // Add more randomness for unpredictable movement
-            const randomAngle = (Math.random() - 0.5) * Math.PI; // Random angle
+            // Add randomness for unpredictable movement
+            const randomAngle = (Math.random() - 0.5) * Math.PI;
             const randomDistance = Math.random() * 100 + intensity;
             
             // Calculate direction with randomness
@@ -758,50 +967,61 @@
             }, 500);
         }
 
-        // Move the No button when mouse gets close
-        document.addEventListener('mousemove', (e) => {
-            if (questionPage.style.display === 'none') return;
-            
-            const btnRect = btnNo.getBoundingClientRect();
-            const btnCenterX = btnRect.left + btnRect.width / 2;
-            const btnCenterY = btnRect.top + btnRect.height / 2;
-            
-            const distance = Math.sqrt(
-                Math.pow(e.clientX - btnCenterX, 2) + 
-                Math.pow(e.clientY - btnCenterY, 2)
-            );
-            
-            // Larger detection radius for earlier reaction
-            if (distance < 150) {
-                moveNoButton(e.clientX, e.clientY);
-            }
-        });
+        // Desktop: Move the No button when mouse gets close
+        if (!isTouchDevice) {
+            document.addEventListener('mousemove', (e) => {
+                if (questionPage.style.display === 'none') return;
+                
+                const btnRect = btnNo.getBoundingClientRect();
+                const btnCenterX = btnRect.left + btnRect.width / 2;
+                const btnCenterY = btnRect.top + btnRect.height / 2;
+                
+                const distance = Math.sqrt(
+                    Math.pow(e.clientX - btnCenterX, 2) + 
+                    Math.pow(e.clientY - btnCenterY, 2)
+                );
+                
+                if (distance < 150) {
+                    moveNoButton(e.clientX, e.clientY);
+                }
+            });
+        }
 
-        // Also move on touch for mobile
+        // Mobile: Move on touch
         btnNo.addEventListener('touchstart', (e) => {
             e.preventDefault();
             const touch = e.touches[0];
             moveNoButton(touch.clientX, touch.clientY);
+        }, { passive: false });
+
+        // Also handle tap attempt
+        btnNo.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (isTouchDevice) {
+                const rect = btnNo.getBoundingClientRect();
+                moveNoButton(rect.left + rect.width / 2, rect.top + rect.height / 2);
+            }
         });
 
-        // Random spontaneous movements to make it even more playful
+        // Random spontaneous movements (less frequent on mobile)
         let spontaneousInterval;
         
         function startSpontaneousMovements() {
+            const interval = isTouchDevice ? 5000 : 3000;
+            const chance = isTouchDevice ? 0.15 : 0.2;
+            
             spontaneousInterval = setInterval(() => {
                 if (questionPage.style.display === 'none') {
                     clearInterval(spontaneousInterval);
                     return;
                 }
                 
-                // 20% chance of spontaneous movement
-                if (Math.random() < 0.2) {
+                if (Math.random() < chance) {
                     const btnRect = btnNo.getBoundingClientRect();
-                    const margin = 80;
+                    const margin = isTouchDevice ? 60 : 80;
                     const maxX = window.innerWidth - btnRect.width - margin;
                     const maxY = window.innerHeight - btnRect.height - margin;
                     
-                    // Random position
                     const newX = margin + Math.random() * (maxX - margin);
                     const newY = margin + Math.random() * (maxY - margin);
                     
@@ -809,11 +1029,27 @@
                     btnNo.style.left = newX + 'px';
                     btnNo.style.top = newY + 'px';
                 }
-            }, 3000); // Check every 3 seconds
+            }, interval);
         }
         
-        // Start spontaneous movements after a delay
         setTimeout(startSpontaneousMovements, 2000);
+
+        // Prevent iOS bounce scrolling
+        document.body.addEventListener('touchmove', (e) => {
+            if (e.target === document.body) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        // Fix iOS viewport height issue
+        const setViewportHeight = () => {
+            const vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        };
+        
+        setViewportHeight();
+        window.addEventListener('resize', setViewportHeight);
+        window.addEventListener('orientationchange', setViewportHeight);
     </script>
 </body>
 </html>
